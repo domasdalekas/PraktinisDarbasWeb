@@ -1,0 +1,41 @@
+﻿@model IEnumerable<PraktinisDarbasWeb.Models.Employee>
+@{
+    ViewBag.Title = "Employees";
+}
+
+<h1>Current Employees</h1>
+<p>@Html.ActionLink("Add employee", "AddEmployee",null, new { @class = "btn btn-default" })</p>
+<p>@Html.ActionLink("Filter","FilterView", null, new { @class = "btn btn-default" })</p>
+<table border="1" cellspacing="0" cellpadding="0" width="90%" class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(e => e.ID)</th>
+            <th>@Html.DisplayNameFor(e => e.Name)</th>
+            <th>@Html.DisplayNameFor(e => e.Surname)</th>
+            <th>@Html.DisplayNameFor(e => e.HomeAddress)</th>
+            <th>@Html.DisplayNameFor(e => e.JobResponsibilites)</th>
+            <th>@Html.DisplayNameFor(e => e.Active)</th>
+            <th>@Html.DisplayNameFor(e => e.BirthDate)</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model)
+        {
+        <tr>
+            <td>@emp.ID</td>
+            <td>@emp.Name</td>
+            <td>@emp.Surname</td>
+            <td>@emp.HomeAddress</td>
+            <td>@emp.JobResponsibilites</td>
+            <td>@emp.Active</td>
+            <td>@emp.BirthDate.ToString("yyyy/MM/dd")</td>
+            <td>@Html.ActionLink("Edit", "EditEmployee", new { ID = emp.ID },new {@class = "btn btn-default" })</td>
+        </tr>
+
+        }
+    </tbody>
+
+</table>
+
