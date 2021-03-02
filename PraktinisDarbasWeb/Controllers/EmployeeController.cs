@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using PraktinisDarbasWeb.Models;
 
 namespace PraktinisDarbasWeb.Controllers
 {
+    /// <summary>
+    /// Enumarator for employee filtering
+    /// </summary>
     public enum Filter
     {
         None,
@@ -17,11 +19,13 @@ namespace PraktinisDarbasWeb.Controllers
         Inactive
     }
     public class EmployeeController : Controller
-    {
-
+    { 
+        
         private readonly EmployeeEntities1 _dbContext = new EmployeeEntities1();
-       
-       
+        /// <summary>
+        /// Field used to obtain maximumemployeeId in database
+        /// </summary>
+        private static int maxEmployeeId;
         public ActionResult Index(FormCollection submittedForm)
         {
 
@@ -31,6 +35,7 @@ namespace PraktinisDarbasWeb.Controllers
                 filter = (Filter)Enum.Parse(typeof(Filter), submittedForm["EmployeeFilter"].ToString());
             }
             IEnumerable<Employee> employees = _dbContext.Employees.ToList();
+            maxEmployeeId = employees.Max(e => e.ID);
             IEnumerable<Employee> filteredEmployees;
             switch(filter)
             {
@@ -58,13 +63,11 @@ namespace PraktinisDarbasWeb.Controllers
         [HttpPost]
         public ActionResult AddEmployee([Bind(Include = "Id,Name,Surname,HomeAddress,JobResponsibilites,Active,BirthDate")]Employee employee)
         {
-            Random random = new Random();
-            var randomid = random.Next(100000);
             try
             {
                 if(ModelState.IsValid)
                 {
-                    employee.ID = randomid;
+                    employee.ID = maxEmployeeId+1;
                     _dbContext.Employees.Add(employee);
                     _dbContext.SaveChanges();
                     return RedirectToAction("Index");
@@ -72,7 +75,7 @@ namespace PraktinisDarbasWeb.Controllers
             }
             catch (DataException dex )
             {
-                            
+                throw dex;            
             }
 
             return View(employee);
@@ -89,25 +92,22 @@ namespace PraktinisDarbasWeb.Controllers
                 return HttpNotFound();
             }
             return View(employee);
-            
         }
 
         [HttpPost]
         public ActionResult EditEmployee([Bind(Include = "Id,Name,Surname,HomeAddress,JobResponsibilites,Active,BirthDate")] Employee employee)
         {
-           
            if(ModelState.IsValid)
-            {
+           {
                 _dbContext.Entry(employee).State = EntityState.Modified;
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index");
-            }
+           }
             return View(employee);
         }
         public ActionResult FilterView(FormCollection form)
         {
             return View();
         }
-
     }
 }
