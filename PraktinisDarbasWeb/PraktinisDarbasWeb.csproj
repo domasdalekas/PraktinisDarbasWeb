@@ -155,6 +155,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Employee.mdf" />
+    <Content Include="App_Data\Employee_log.ldf" />
     <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap-slate.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -214,9 +216,7 @@
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\FilterView.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
